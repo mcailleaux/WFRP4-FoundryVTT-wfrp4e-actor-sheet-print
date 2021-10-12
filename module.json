@@ -1,0 +1,29 @@
+{
+  "name": "wfrp4e-actor-sheet-print",
+  "title": "[WFRP4] Actor Sheet Print",
+  "description": "Functions to print actor sheet",
+  "version": "1.0.0",
+  "minimumCoreVersion": "0.8.0",
+  "compatibleCoreVersion": "0.8.9",
+  "author": "Skeroujvapluvit",
+  "systems": ["wfrp4e"],
+  "dependencies": [],
+  "languages": [
+    {
+      "lang": "en",
+      "name": "English",
+      "path": "lang/en.json"
+    },
+    {
+      "lang": "fr",
+      "name": "Français",
+      "path": "lang/fr.json"
+    }
+  ],
+  "styles": ["./styles/pj-print.css"],
+  "url": "https://github.com/mcailleaux/WFRP4-FoundryVTT-wfrp4e-actor-sheet-print",
+  "download": "https://github.com/mcailleaux/WFRP4-FoundryVTT-wfrp4e-actor-sheet-print/blob/dist/dist/wfrp4e-actor-sheet-print.zip?raw=true",
+  "manifest": "https://raw.githubusercontent.com/mcailleaux/WFRP4-FoundryVTT-wfrp4e-actor-sheet-print/dist/module.json",
+  "readme": "https://raw.githubusercontent.com/mcailleaux/WFRP4-FoundryVTT-wfrp4e-actor-sheet-print/dist/README.md",
+  "changelog": "https://raw.githubusercontent.com/mcailleaux/WFRP4-FoundryVTT-wfrp4e-actor-sheet-print/dist/CHANGELOG.md"
+}

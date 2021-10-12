@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "baseUrl": "tsconfig",
+    "lib": ["es2018", "dom"],
+    "declaration": true,
+    "moduleResolution": "node",
+    "noEmitOnError": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUnusedParameters": true,
+    "noUnusedLocals": true,
+    "rootDir": "src/",
+    "outDir": "dist",
+    "skipDefaultLibCheck": true,
+    "skipLibCheck": true,
+    "sourceMap": true,
+    "inlineSources": true,
+    "sourceRoot": "scr",
+    "strictNullChecks": true,
+    "target": "es6",
+    "types": ["@league-of-foundry-developers/foundry-vtt-types"]
+  },
+  "include": ["src/**/*"]
+}

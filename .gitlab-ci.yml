@@ -1,0 +1,76 @@
+image: docker-repository-greenskin.cailleaux.com/greenskin/ci-builder-node14:2.0
+
+variables:
+  GIT_DEPTH: 0
+  GIT_STRATEGY: fetch
+
+stages:
+  - build
+  - deploy
+
+build:
+  stage: build
+  script:
+    - npm ci
+    - npm run build
+    - mkdir -p dist/lang
+    - mkdir -p dist/styles
+    - cp lang/* dist/lang/
+    - cp styles/* dist/styles/
+    - cp module.json dist
+    - cd dist
+    - zip wfrp4e-actor-sheet-print.zip -r *.* lang styles -x ".*"
+  artifacts:
+    name: wfrp4e-actor-sheet-print
+    when: on_success
+    paths:
+      - dist/wfrp4e-actor-sheet-print.zip
+  only:
+    - tags
+    - master
+
+build_beta:
+  stage: build
+  script:
+    - npm ci
+    - npm run build
+    - mkdir -p dist/lang
+    - mkdir -p dist/styles
+    - cp lang/* dist/lang/
+    - cp styles/* dist/styles/
+    - cp module-beta.json dist/module.json
+    - cd dist
+    - zip wfrp4e-actor-sheet-print.zip -r *.* lang styles -x ".*"
+  artifacts:
+    name: wfrp4e-actor-sheet-print
+    when: on_success
+    paths:
+      - dist/wfrp4e-actor-sheet-print.zip
+  rules:
+    - if: '$CI_COMMIT_BRANCH =~ /^(dev)\/.*$/'
+      when: on_success
+
+deploy:
+  stage: deploy
+  script:
+    - git config --global user.email "$GIT_USER_EMAIL"
+    - git config --global user.name "$GIT_USER_NAME"
+    - git add -f dist/wfrp4e-actor-sheet-print.zip
+    - git commit -m "push artifact on dist-v4 branch"
+    - git remote set-url origin $GIT_SSH_URL
+    - git push -f origin HEAD:dist-v4
+  only:
+    - master
+
+deploy_beta:
+  stage: deploy
+  script:
+    - git config --global user.email "$GIT_USER_EMAIL"
+    - git config --global user.name "$GIT_USER_NAME"
+    - git add -f dist/wfrp4e-actor-sheet-print.zip
+    - git commit -m "push artifact on dist-beta-v4 branch"
+    - git remote set-url origin $GIT_SSH_URL
+    - git push -f origin HEAD:dist-beta-v4
+  rules:
+    - if: '$CI_COMMIT_BRANCH =~ /^(dev)\/.*$/'
+      when: on_success
