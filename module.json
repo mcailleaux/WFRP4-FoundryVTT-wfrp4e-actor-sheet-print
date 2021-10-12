@@ -8,6 +8,7 @@
   "author": "Skeroujvapluvit",
   "systems": ["wfrp4e"],
   "dependencies": [],
+  "esmodules": ["main.js"],
   "languages": [
     {
       "lang": "en",
