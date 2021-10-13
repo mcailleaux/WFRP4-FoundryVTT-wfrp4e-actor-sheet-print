@@ -338,9 +338,9 @@
   .tab[data-tab] {
     display: flex;
     height: auto !important;
-    page-break-after: always;
-    page-break-inside: avoid;
-    break-inside: avoid;
+    page-break-after: auto;
+    page-break-inside: auto;
+    break-inside: auto;
   }
 
   table,
