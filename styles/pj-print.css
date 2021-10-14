@@ -47,6 +47,18 @@
     background-image: none;
   }
 
+  * {
+    break-inside: auto !important;
+    break-before: auto !important;
+    break-after: auto !important;
+    page-break-inside: auto !important;
+    page-break-before: auto !important;
+    page-break-after: auto !important;
+    -webkit-column-break-inside: auto !important;
+    -webkit-column-break-before: auto !important;
+    -webkit-column-break-after: auto !important;
+  }
+
   .wfrp4e-print .window-header,
   .wfrp4e-print .window-content form > .header,
   .wfrp4e-print .characteristics-table > div:not(.table-header):not(.bottom),
@@ -338,25 +350,10 @@
   .tab[data-tab] {
     display: flex;
     height: auto !important;
-    page-break-after: auto;
-    page-break-inside: auto;
-    break-inside: auto;
-  }
-
-  table,
-  li,
-  p {
-    page-break-inside: avoid;
-    break-inside: avoid;
   }
 
   nav.tabs {
     display: none !important;
-  }
-
-  li.item {
-    page-break-inside: avoid;
-    break-inside: avoid;
   }
 
   .window-resizable-handle,
