@@ -47,7 +47,7 @@
     background-image: none;
   }
 
-  * {
+  /*  * {
     break-inside: auto !important;
     break-before: auto !important;
     break-after: auto !important;
@@ -57,7 +57,7 @@
     -webkit-column-break-inside: auto !important;
     -webkit-column-break-before: auto !important;
     -webkit-column-break-after: auto !important;
-  }
+  }*/
 
   .wfrp4e-print .window-header,
   .wfrp4e-print .window-content form > .header,
