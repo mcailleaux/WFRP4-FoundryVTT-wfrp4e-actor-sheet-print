@@ -1,5 +1,6 @@
 import { Box } from './box';
 import jsPDF from 'jspdf';
+import { AbstractElement } from './abstract-element';
 
 export class Image extends Box {
   public imageData: string;
@@ -18,5 +19,9 @@ export class Image extends Box {
       height: this.h,
     });
     return doc;
+  }
+
+  public getElements(): AbstractElement[] {
+    return [this];
   }
 }

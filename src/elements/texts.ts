@@ -53,7 +53,7 @@ export class Texts extends Row {
     }
   }
 
-  public render(doc: jsPDF, maxWidth?: number): jsPDF {
+  public prepareRender(doc: jsPDF, maxWidth?: number): jsPDF {
     const pageWidth = doc.internal.pageSize.width;
     const rowWidth = pageWidth - this.x - MARGINS.right;
     for (const column of this.elements) {
@@ -61,6 +61,10 @@ export class Texts extends Row {
         labelledValue.maxWidth = rowWidth / this.nbrOfCol;
       }
     }
-    return super.render(doc, maxWidth);
+    return super.prepareRender(doc, maxWidth);
+  }
+
+  public render(doc: jsPDF, _maxWidth?: number): jsPDF {
+    return doc;
   }
 }

@@ -21,7 +21,7 @@ export class Row extends AbstractElement {
     this.maxWidths = maxWidths ?? [];
   }
 
-  public render(doc: jsPDF, maxWidth?: number): jsPDF {
+  public prepareRender(doc: jsPDF, maxWidth?: number): jsPDF {
     const elements = this.elements ?? [];
     let maxWidths = this.maxWidths ?? [];
     let widthPercents = this.widthPercents ?? [];
@@ -50,9 +50,13 @@ export class Row extends AbstractElement {
       const maxChildWidth = maxWidths[i] ?? percentWidth;
       element.x = currentX;
       element.y = this.y;
-      element.render(doc, maxChildWidth);
+      element.prepareRender(doc, maxChildWidth);
       currentX += percentWidth;
     }
+    return doc;
+  }
+
+  public render(doc: jsPDF, _maxWidth?: number): jsPDF {
     return doc;
   }
 
@@ -62,5 +66,21 @@ export class Row extends AbstractElement {
       maxHeight = Math.max(maxHeight, element.getHeight(doc));
     }
     return maxHeight;
+  }
+
+  public getCheckNewPageHeight(doc?: jsPDF): number {
+    let maxHeight = 0;
+    for (const element of this.elements) {
+      maxHeight = Math.max(maxHeight, element.getCheckNewPageHeight(doc));
+    }
+    return maxHeight;
+  }
+
+  public getElements(): AbstractElement[] {
+    const elements: AbstractElement[] = [];
+    for (const element of this.elements) {
+      elements.push(...element.getElements());
+    }
+    return elements;
   }
 }

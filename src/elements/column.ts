@@ -9,17 +9,21 @@ export class Column extends AbstractElement {
     this.elements = elements;
   }
 
-  public render(doc: jsPDF, _maxWidth?: number): jsPDF {
+  public prepareRender(doc: jsPDF, _maxWidth?: number): jsPDF {
     const elements = this.elements ?? [];
 
     let currentY = this.y;
     for (let i = 0; i < elements.length; i++) {
       const element = elements[i];
-      element.x = this.x;
+      element.x = Math.max(element.x, this.x);
       element.y = currentY;
-      element.render(doc);
+      element.prepareRender(doc);
       currentY += element.getHeight(doc) + 2;
     }
+    return doc;
+  }
+
+  public render(doc: jsPDF, _maxWidth?: number): jsPDF {
     return doc;
   }
 
@@ -32,5 +36,19 @@ export class Column extends AbstractElement {
         }
         return p + c + 2;
       });
+  }
+
+  public getCheckNewPageHeight(doc?: jsPDF): number {
+    return this.elements.length > 0
+      ? this.elements[0].getCheckNewPageHeight(doc)
+      : 0;
+  }
+
+  public getElements(): AbstractElement[] {
+    const elements: AbstractElement[] = [];
+    for (const element of this.elements) {
+      elements.push(...element.getElements());
+    }
+    return elements;
   }
 }

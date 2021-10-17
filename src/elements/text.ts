@@ -17,11 +17,18 @@ export class Text extends AbstractElement {
     this.textOptions = textOptions;
   }
 
-  public render(doc: jsPDF, maxWidth?: number): jsPDF {
+  public prepareRender(doc: jsPDF, maxWidth?: number): jsPDF {
     this.updateMaxWidth(maxWidth);
-    let finalText = [i18nLocalize(this.text)];
+    return doc;
+  }
+
+  public render(doc: jsPDF, _maxWidth?: number): jsPDF {
+    let finalText: string[] = [i18nLocalize(this.text)];
     if (this.maxWidth != null) {
-      finalText = doc.splitTextToSize(finalText[0], maxWidth ?? 0);
+      finalText = doc.splitTextToSize(finalText[0], this.maxWidth ?? 0);
+    }
+    if (finalText.length > 1) {
+      finalText[0] = finalText[0].replace(/(.){3}$/, '...');
     }
     const yText = this.y + this.getHeightFromPx(doc, TEXT_SIZE);
     doc
@@ -41,5 +48,13 @@ export class Text extends AbstractElement {
 
   public getHeight(doc): number {
     return this.getHeightFromPx(doc, TEXT_SIZE);
+  }
+
+  public getCheckNewPageHeight(doc?: jsPDF): number {
+    return this.getHeight(doc);
+  }
+
+  public getElements(): AbstractElement[] {
+    return [this];
   }
 }

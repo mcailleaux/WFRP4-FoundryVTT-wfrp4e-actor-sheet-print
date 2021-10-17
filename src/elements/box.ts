@@ -11,6 +11,10 @@ export class Box extends AbstractElement {
     this.h = h;
   }
 
+  public prepareRender(doc: jsPDF, _maxWidth?: number): jsPDF {
+    return doc;
+  }
+
   public render(doc: jsPDF, _maxWidth?: number): jsPDF {
     doc.rect(this.x, this.y, this.w, this.h);
     return doc;
@@ -18,5 +22,13 @@ export class Box extends AbstractElement {
 
   public getHeight(_doc): number {
     return this.h;
+  }
+
+  public getCheckNewPageHeight(doc?: jsPDF): number {
+    return this.getHeight(doc);
+  }
+
+  public getElements(): AbstractElement[] {
+    return [this];
   }
 }

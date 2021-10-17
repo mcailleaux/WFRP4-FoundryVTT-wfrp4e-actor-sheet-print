@@ -1,6 +1,7 @@
 import jsPDF, { TextOptionsLight } from 'jspdf';
 import { Text } from './text';
 import { i18nLocalize, LABEL_SIZE, TEXT_SIZE } from '../constants';
+import { AbstractElement } from './abstract-element';
 
 export class LabelledText extends Text {
   public label: string;
@@ -23,8 +24,12 @@ export class LabelledText extends Text {
     this.updateMaxWidth(maxWidth);
   }
 
-  public render(doc: jsPDF, maxWidth?: number): jsPDF {
+  public prepareRender(doc: jsPDF, maxWidth?: number): jsPDF {
     this.updateMaxWidth(maxWidth);
+    return super.prepareRender(doc, maxWidth);
+  }
+
+  public render(doc: jsPDF, _maxWidth?: number): jsPDF {
     const yLabel = this.y + this.getHeightFromPx(doc, LABEL_SIZE);
     const yText = yLabel + this.getHeightFromPx(doc, TEXT_SIZE) + 1;
     doc
@@ -49,5 +54,13 @@ export class LabelledText extends Text {
 
   public getHeight(doc): number {
     return this.getHeightFromPx(doc, TEXT_SIZE + LABEL_SIZE) + 1;
+  }
+
+  public getCheckNewPageHeight(doc?: jsPDF): number {
+    return this.getHeight(doc);
+  }
+
+  public getElements(): AbstractElement[] {
+    return [this];
   }
 }

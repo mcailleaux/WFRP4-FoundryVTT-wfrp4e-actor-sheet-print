@@ -20,7 +20,13 @@ export abstract class AbstractElement {
     this.maxWidth = maxWidth;
   }
 
+  public abstract prepareRender(doc: jsPDF, maxWidth?: number): jsPDF;
+
   public abstract render(doc: jsPDF, maxWidth?: number): jsPDF;
 
   public abstract getHeight(doc?: jsPDF): number;
+
+  public abstract getCheckNewPageHeight(doc?: jsPDF): number;
+
+  public abstract getElements(): AbstractElement[];
 }
