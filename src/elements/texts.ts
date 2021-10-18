@@ -3,12 +3,19 @@ import { Column } from './column';
 import jsPDF from 'jspdf';
 import { MARGINS } from '../constants';
 import { Text } from './text';
+import { MultilineText } from './multiline-text';
 
 export class Texts extends Row {
   public texts: string[];
   public nbrOfCol: number;
 
-  constructor(x: number, y: number, texts: string[], nbrOfCol?: number) {
+  constructor(
+    x: number,
+    y: number,
+    texts: string[],
+    nbrOfCol?: number,
+    multiline = false
+  ) {
     super(x, y, []);
     this.texts = texts;
     this.nbrOfCol = nbrOfCol ?? 4;
@@ -39,7 +46,11 @@ export class Texts extends Row {
           currentIndex = 3;
         }
         (<Column>this.elements[currentIndex]).elements.push(
-          new Row(0, 0, [new Text(0, 0, texts[i])])
+          new Row(0, 0, [
+            multiline
+              ? new MultilineText(0, 0, texts[i])
+              : new Text(0, 0, texts[i]),
+          ])
         );
       }
     } else {
@@ -47,7 +58,14 @@ export class Texts extends Row {
         new Column(
           0,
           0,
-          texts.map((text) => new Row(0, 0, [new Text(0, 0, text)]))
+          texts.map(
+            (text) =>
+              new Row(0, 0, [
+                multiline
+                  ? new MultilineText(0, 0, text)
+                  : new Text(0, 0, text),
+              ])
+          )
         )
       );
     }

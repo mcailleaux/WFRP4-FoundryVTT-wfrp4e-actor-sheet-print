@@ -23,17 +23,16 @@ export class Text extends AbstractElement {
   }
 
   public render(doc: jsPDF, _maxWidth?: number): jsPDF {
+    doc.setFontSize(TEXT_SIZE);
     let finalText: string[] = [i18nLocalize(this.text)];
     if (this.maxWidth != null) {
-      finalText = doc.splitTextToSize(finalText[0], this.maxWidth ?? 0);
+      finalText = doc.splitTextToSize(finalText[0], this.maxWidth);
     }
     if (finalText.length > 1) {
       finalText[0] = finalText[0].replace(/(.){3}$/, '...');
     }
     const yText = this.y + this.getHeightFromPx(doc, TEXT_SIZE);
-    doc
-      .setFontSize(TEXT_SIZE)
-      .text(finalText[0], this.x, yText, this.textOptions);
+    doc.text(finalText[0], this.x, yText, this.textOptions);
     return doc;
   }
 

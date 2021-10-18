@@ -16,6 +16,10 @@ export abstract class AbstractElement {
     return size / doc.internal.scaleFactor;
   }
 
+  public getPxFromSize(doc: jsPDF, size: number) {
+    return size * doc.internal.scaleFactor;
+  }
+
   protected updateMaxWidth(maxWidth?: number) {
     this.maxWidth = maxWidth;
   }

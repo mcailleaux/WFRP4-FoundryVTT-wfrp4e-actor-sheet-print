@@ -4,13 +4,14 @@ import { Row } from './elements/row';
 import { Image } from './elements/image';
 import { Box } from './elements/box';
 import { Util } from './util';
-import { LABEL_SIZE, MARGINS, TEXT_SIZE } from './constants';
+import { i18nLocalize, LABEL_SIZE, MARGINS, TEXT_SIZE } from './constants';
 import { ItemData } from '@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/data.mjs';
 import { LabelledValues } from './elements/labelled-values';
 import { Text } from './elements/text';
 import { Texts } from './elements/texts';
 import { Column } from './elements/column';
 import { Separator } from './elements/separator';
+import { Blank } from './elements/blank';
 
 Hooks.on(
   'renderActorSheetWfrp4eCharacter',
@@ -46,7 +47,9 @@ Hooks.on(
         actor.itemCategories.skill
           .map((item) => {
             return {
-              label: item.name,
+              label: `${item.name} (${i18nLocalize(
+                item.characteristic.abrev
+              )})`,
               value: item.data.data.total.value,
             };
           })
@@ -67,7 +70,8 @@ Hooks.on(
             };
           })
           .sort((a, b) => a.label.localeCompare(b.label)),
-        1
+        1,
+        true
       );
 
       const traits = new Texts(
@@ -87,14 +91,15 @@ Hooks.on(
         actor.itemCategories.weapon
           .filter((w) => w.isMelee)
           .map((item) => {
-            return `${item.name} : ${item.data.data.damage.meleeValue} (${
-              item.mountDamage
-            }), ${item.OriginalQualities.concat(item.OriginalFlaws).join(
-              ', '
-            )}`;
+            return `${item.name} : ${item.WeaponGroup}, ${item.Reach}, ${
+              item.data.data.damage.meleeValue
+            } (${item.mountDamage}), ${item.OriginalQualities.concat(
+              item.OriginalFlaws
+            ).join(', ')}`;
           })
           .sort((a, b) => a.localeCompare(b)),
-        1
+        1,
+        true
       );
 
       const weaponsRanged = new Texts(
@@ -103,12 +108,17 @@ Hooks.on(
         actor.itemCategories.weapon
           .filter((w) => w.isRanged)
           .map((item) => {
-            return `${item.name} : ${item.data.data.damage.rangedValue}, ${
+            return `${item.name} : ${item.WeaponGroup}, ${
               item.data.data.range.value
-            }, ${item.OriginalQualities.concat(item.OriginalFlaws).join(', ')}`;
+            } (${item.Range}), ${item.data.data.damage.rangedValue} (${
+              item.Damage
+            }), ${item.OriginalQualities.concat(item.OriginalFlaws).join(
+              ', '
+            )}`;
           })
           .sort((a, b) => a.localeCompare(b)),
-        1
+        1,
+        true
       );
 
       const ammunitions = new Texts(
@@ -117,15 +127,51 @@ Hooks.on(
         actor.itemCategories.ammunition
           .map((item) => {
             return `${item.data.data.quantity.value} ${item.name} : ${
+              item.data.data.range.value.length > 0
+                ? item.data.data.range.value
+                : 'As Weapon'
+            }, ${
               item.data.data.damage.value.length > 0
                 ? item.data.data.damage.value
                 : '+0'
-            }, (${item.data.data.range.value}), ${item.OriginalQualities.concat(
-              item.OriginalFlaws
-            ).join(', ')}`;
+            }, ${item.OriginalQualities.concat(item.OriginalFlaws).join(', ')}`;
           })
           .sort((a, b) => a.localeCompare(b)),
-        2
+        2,
+        true
+      );
+
+      const armourLocation: string[] = [];
+      const armourLabels: { [key: string]: string[] } = {};
+      for (const armour of actor.itemCategories.armour) {
+        const maxAp = armour.data.data.maxAP;
+        for (const key of Object.keys(maxAp)) {
+          if (maxAp[key] > 0) {
+            if (!armourLocation.includes(key)) {
+              armourLocation.push(key);
+            }
+            if (armourLabels[key] == null) {
+              armourLabels[key] = [];
+            }
+            armourLabels[key].push(
+              `${armour.name} ${maxAp[key]} ${armour.OriginalQualities.concat(
+                armour.OriginalFlaws
+              ).join(' ')}`
+            );
+          }
+        }
+      }
+
+      const armours = new Texts(
+        0,
+        0,
+        armourLocation.map((al) => {
+          return `${actorStatus?.armour[al]?.label} : ${armourLabels[al]?.join(
+            ', '
+          )}`;
+        }),
+        1,
+        true
       );
 
       const imageWidth = 25;
@@ -190,6 +236,7 @@ Hooks.on(
               `${actorDetails?.starsign?.value}`
             ),
           ]),
+          Blank.heightBlank(2),
           new Row(0, 0, [
             new LabelledText(
               0,
@@ -261,20 +308,51 @@ Hooks.on(
           new Text(0, 0, 'Skills'),
           skills,
           new Separator(0, 0),
-          new Text(0, 0, 'Talents'),
+          new Text(
+            0,
+            0,
+            `${i18nLocalize('Talents')} : ${i18nLocalize('Tests')}`
+          ),
           talents,
           new Separator(0, 0),
           new Text(0, 0, 'Traits'),
           traits,
           new Separator(0, 0),
-          new Text(0, 0, 'SHEET.MeleeWeaponHeader'),
+          new Text(
+            0,
+            0,
+            `${i18nLocalize('SHEET.MeleeWeaponHeader')} : ${i18nLocalize(
+              'Weapon Group'
+            )}, ${i18nLocalize('Reach')}, ${i18nLocalize(
+              'Damage'
+            )}, ${i18nLocalize('Qualities')}, ${i18nLocalize('Flaws')}`
+          ),
           weaponsMelee,
           new Separator(0, 0),
-          new Text(0, 0, 'SHEET.RangedWeaponHeader'),
+          new Text(
+            0,
+            0,
+            `${i18nLocalize('SHEET.RangedWeaponHeader')} : ${i18nLocalize(
+              'Weapon Group'
+            )}, ${i18nLocalize('Range')}, ${i18nLocalize(
+              'Damage'
+            )}, ${i18nLocalize('Qualities')}, ${i18nLocalize('Flaws')}`
+          ),
           weaponsRanged,
           new Separator(0, 0),
-          new Text(0, 0, 'Ammunition'),
+          new Text(
+            0,
+            0,
+            `${i18nLocalize('Ammunition')} : ${i18nLocalize(
+              'Range'
+            )}, ${i18nLocalize('Damage')}, ${i18nLocalize(
+              'Qualities'
+            )}, ${i18nLocalize('Flaws')}`
+          ),
           ammunitions,
+          new Separator(0, 0),
+          new Text(0, 0, 'Armour'),
+          armours,
         ]),
       ]);
       docBuilder.doc.save(`${app.actor.name}.pdf`);

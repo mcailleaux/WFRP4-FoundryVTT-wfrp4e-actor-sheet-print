@@ -12,7 +12,8 @@ export class LabelledValues extends Row {
     x: number,
     y: number,
     labelledValues: { label: string; value: number }[],
-    nbrOfCol?: number
+    nbrOfCol?: number,
+    multiline = false
   ) {
     super(x, y, []);
     this.labelledValues = labelledValues;
@@ -47,7 +48,8 @@ export class LabelledValues extends Row {
           new LabelledValue(
             labelledValues[i].label,
             labelledValues[i].value,
-            widthPercent
+            widthPercent,
+            multiline
           )
         );
       }
@@ -61,7 +63,8 @@ export class LabelledValues extends Row {
               new LabelledValue(
                 libelledValue.label,
                 libelledValue.value,
-                widthPercent
+                widthPercent,
+                multiline
               )
           )
         )
