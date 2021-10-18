@@ -88,7 +88,7 @@ Hooks.on(
       const weaponsMelee = new Texts(
         0,
         0,
-        actor.itemCategories.weapon
+        Util.getActorItems(actor, 'weapon')
           .filter((w) => w.isMelee)
           .map((item) => {
             return `${item.name} : ${item.WeaponGroup}, ${item.Reach}, ${
@@ -105,7 +105,7 @@ Hooks.on(
       const weaponsRanged = new Texts(
         0,
         0,
-        actor.itemCategories.weapon
+        Util.getActorItems(actor, 'weapon')
           .filter((w) => w.isRanged)
           .map((item) => {
             return `${item.name} : ${item.WeaponGroup}, ${
@@ -124,7 +124,7 @@ Hooks.on(
       const ammunitions = new Texts(
         0,
         0,
-        actor.itemCategories.ammunition
+        Util.getActorItems(actor, 'ammunition')
           .map((item) => {
             return `${item.data.data.quantity.value} ${item.name} : ${
               item.data.data.range.value.length > 0
@@ -143,7 +143,7 @@ Hooks.on(
 
       const armourLocation: string[] = [];
       const armourLabels: { [key: string]: string[] } = {};
-      for (const armour of actor.itemCategories.armour) {
+      for (const armour of Util.getActorItems(actor, 'armour')) {
         const maxAp = armour.data.data.maxAP;
         for (const key of Object.keys(maxAp)) {
           if (maxAp[key] > 0) {
@@ -172,6 +172,160 @@ Hooks.on(
         }),
         1,
         true
+      );
+
+      const petty = new Texts(
+        0,
+        0,
+        actor.itemCategories.spell
+          .filter((s) => s.lore.value === 'petty')
+          .map((s) => {
+            return `${s.name} : ${s.cn.value}, ${s.Range}, ${s.Target}, ${s.Duration}`;
+          }),
+        2,
+        true
+      );
+
+      const spell = new Texts(
+        0,
+        0,
+        actor.itemCategories.spell
+          .filter((s) => s.lore.value !== 'petty')
+          .map((s) => {
+            return `${s.name} : ${s.cn.value}, ${s.Range}, ${s.Target}, ${s.Duration}, ${s.ingredientList.length}`;
+          }),
+        2,
+        true
+      );
+
+      const blessing = new Texts(
+        0,
+        0,
+        actor.itemCategories.prayer
+          .filter((s) => s.prayerType.value === 'blessing')
+          .map((s) => {
+            return `${s.name} : ${s.Range}, ${s.Target}, ${s.Duration}`;
+          }),
+        2,
+        true
+      );
+
+      const miracle = new Texts(
+        0,
+        0,
+        actor.itemCategories.prayer
+          .filter((s) => s.prayerType.value !== 'blessing')
+          .map((s) => {
+            return `${s.name} : ${s.Range}, ${s.Target}, ${s.Duration}`;
+          }),
+        2,
+        true
+      );
+
+      const allMoney = Util.getActorItems(actor, 'money');
+      const moneyNames: string[] = [];
+      const moneyByName: { [name: string]: number } = {};
+      for (const money of allMoney) {
+        if (!moneyNames.includes(money.name)) {
+          moneyNames.push(money.name);
+        }
+        if (moneyByName[money.name] == null) {
+          moneyByName[money.name] = 0;
+        }
+        moneyByName[money.name] =
+          moneyByName[money.name] + money.quantity.value;
+      }
+
+      const trappingsHeader = new Texts(
+        0,
+        0,
+        [
+          `${i18nLocalize('Trappings')} : ${i18nLocalize(
+            'Money'
+          )} : ${moneyNames
+            .map((m) => {
+              return `${m} : ${moneyByName[m]}`;
+            })
+            .join(', ')}`,
+        ],
+        1,
+        true
+      );
+
+      const trappings = new Texts(
+        0,
+        0,
+        Util.getAllActorItems(actor, ['container', 'trapping'])
+          .map((t) => {
+            const location = t.location.value;
+            let prefix = '';
+            if (location != null && location !== 0) {
+              prefix = `${actor.getEmbeddedDocument('Item', location).name} : `;
+            }
+            const qteLabel = t.quantity.value > 1 ? `${t.quantity.value} ` : '';
+            return `${prefix}${qteLabel}${t.name}`;
+          })
+          .sort((a, b) => a.localeCompare(b)),
+        4,
+        true
+      );
+
+      const critical = new Texts(
+        0,
+        0,
+        actor.itemCategories.critical.map((i) => {
+          return i.name;
+        }),
+        3
+      );
+
+      const disease = new Texts(
+        0,
+        0,
+        actor.itemCategories.disease.map((i) => {
+          return i.name;
+        }),
+        3
+      );
+
+      const injury = new Texts(
+        0,
+        0,
+        actor.itemCategories.injury.map((i) => {
+          return i.name;
+        }),
+        3
+      );
+
+      const mutationP = new Texts(
+        0,
+        0,
+        actor.itemCategories.mutation
+          .filter((i) => i.mutationType.value === 'physical')
+          .map((i) => {
+            return i.name;
+          }),
+        3
+      );
+
+      const mutationM = new Texts(
+        0,
+        0,
+        actor.itemCategories.mutation
+          .filter((i) => i.mutationType.value === 'mental')
+          .map((i) => {
+            return i.name;
+          }),
+        3
+      );
+
+      const psychology = new Texts(
+        0,
+        0,
+        actor.itemCategories.psychology.map((i) => {
+          return i.name;
+        }),
+        3
       );
 
       const imageWidth = 25;
@@ -353,6 +507,77 @@ Hooks.on(
           new Separator(0, 0),
           new Text(0, 0, 'Armour'),
           armours,
+          new Separator(0, 0),
+          new Text(
+            0,
+            0,
+            `${i18nLocalize('SHEET.PettySpell')} : ${i18nLocalize(
+              'Casting Number'
+            )}, ${i18nLocalize('Range')}, ${i18nLocalize(
+              'Target'
+            )}, ${i18nLocalize('Duration')}`
+          ),
+          petty,
+          new Separator(0, 0),
+          new Text(
+            0,
+            0,
+            `${i18nLocalize('SHEET.LoreSpell')} : ${i18nLocalize(
+              'Casting Number'
+            )}, ${i18nLocalize('Range')}, ${i18nLocalize(
+              'Target'
+            )}, ${i18nLocalize('Duration')}, ${i18nLocalize(
+              'WFRP4E.TrappingType.Ingredients'
+            )}`
+          ),
+          spell,
+          new Separator(0, 0),
+          new Text(
+            0,
+            0,
+            `${i18nLocalize('Blessing')} : ${i18nLocalize(
+              'Range'
+            )}, ${i18nLocalize('Target')}, ${i18nLocalize('Duration')}`
+          ),
+          blessing,
+          new Separator(0, 0),
+          new Text(
+            0,
+            0,
+            `${i18nLocalize('Miracle')} : ${i18nLocalize(
+              'Range'
+            )}, ${i18nLocalize('Target')}, ${i18nLocalize('Duration')}`
+          ),
+          miracle,
+          new Separator(0, 0),
+          trappingsHeader,
+          trappings,
+          new Separator(0, 0),
+          new Text(0, 0, 'Psychology'),
+          psychology,
+          new Separator(0, 0),
+          new Text(0, 0, 'Criticals'),
+          critical,
+          new Separator(0, 0),
+          new Text(0, 0, 'Diseases'),
+          disease,
+          new Separator(0, 0),
+          new Text(0, 0, 'Injuries'),
+          injury,
+          new Separator(0, 0),
+          new Text(
+            0,
+            0,
+            `${i18nLocalize('Mutations')} (${i18nLocalize('Physical')})`
+          ),
+          mutationP,
+          new Separator(0, 0),
+          new Text(
+            0,
+            0,
+            `${i18nLocalize('Mutations')} (${i18nLocalize('Mental')})`
+          ),
+          mutationM,
         ]),
       ]);
       docBuilder.doc.save(`${app.actor.name}.pdf`);

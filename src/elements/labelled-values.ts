@@ -25,7 +25,7 @@ export class LabelledValues extends Row {
     const labelPercent = 100 - valuePercent;
     const widthPercent = [labelPercent, valuePercent];
     let currentIndex = 0;
-    if (labelledValues.length >= this.nbrOfCol) {
+    if (this.nbrOfCol > 1) {
       const nbrPerCol = Math.floor(labelledValues.length / this.nbrOfCol);
       const rest = labelledValues.length - nbrPerCol * this.nbrOfCol;
       const nbrPerCols = [

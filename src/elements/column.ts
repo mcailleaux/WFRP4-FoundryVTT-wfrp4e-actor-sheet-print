@@ -28,14 +28,16 @@ export class Column extends AbstractElement {
   }
 
   public getHeight(doc): number {
-    return this.elements
-      .map((e) => e.getHeight(doc))
-      .reduce((p, c, i) => {
-        if (i === 0) {
-          return c;
-        }
-        return p + c + 2;
-      });
+    return this.elements.length > 0
+      ? this.elements
+          .map((e) => e.getHeight(doc))
+          .reduce((p, c, i) => {
+            if (i === 0) {
+              return c;
+            }
+            return p + c + 2;
+          })
+      : 0;
   }
 
   public getCheckNewPageHeight(doc?: jsPDF): number {

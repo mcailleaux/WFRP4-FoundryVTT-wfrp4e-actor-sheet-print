@@ -23,7 +23,7 @@ export class Texts extends Row {
       this.nbrOfCol = 4;
     }
     let currentIndex = 0;
-    if (texts.length >= this.nbrOfCol) {
+    if (this.nbrOfCol > 1) {
       const nbrPerCol = Math.floor(texts.length / this.nbrOfCol);
       const rest = texts.length - nbrPerCol * this.nbrOfCol;
       const nbrPerCols = [
