@@ -1,0 +1,13 @@
+.app.window-app .window-header .print {
+  color: #e8d29c;
+  text-align: center;
+  height: 30px;
+  width: 30px;
+  margin: 0;
+  padding: 0;
+  background: url('/systems/wfrp4e/ui/buttons/button-blank.webp');
+}
+
+.app.window-app .window-header .print i {
+  font-size: 12px;
+}

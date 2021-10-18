@@ -16,7 +16,6 @@ import { Blank } from './elements/blank';
 Hooks.on(
   'renderActorSheetWfrp4eCharacter',
   async (app: ActorSheet, html: JQuery) => {
-    console.dir(app);
     const actor: Actor & any = app.actor;
     const actorData = actor.data;
     // @ts-ignore
@@ -468,115 +467,175 @@ Hooks.on(
             `${i18nLocalize('Talents')} : ${i18nLocalize('Tests')}`
           ),
           talents,
-          new Separator(0, 0),
-          new Text(0, 0, 'Traits'),
+          traits.elements.length > 0
+            ? new Separator(0, 0)
+            : Blank.heightBlank(0),
+          traits.elements.length > 0
+            ? new Text(0, 0, 'Traits')
+            : Blank.heightBlank(0),
           traits,
-          new Separator(0, 0),
-          new Text(
-            0,
-            0,
-            `${i18nLocalize('SHEET.MeleeWeaponHeader')} : ${i18nLocalize(
-              'Weapon Group'
-            )}, ${i18nLocalize('Reach')}, ${i18nLocalize(
-              'Damage'
-            )}, ${i18nLocalize('Qualities')}, ${i18nLocalize('Flaws')}`
-          ),
+          weaponsMelee.elements.length > 0
+            ? new Separator(0, 0)
+            : Blank.heightBlank(0),
+          weaponsMelee.elements.length > 0
+            ? new Text(
+                0,
+                0,
+                `${i18nLocalize('SHEET.MeleeWeaponHeader')} : ${i18nLocalize(
+                  'Weapon Group'
+                )}, ${i18nLocalize('Reach')}, ${i18nLocalize(
+                  'Damage'
+                )}, ${i18nLocalize('Qualities')}, ${i18nLocalize('Flaws')}`
+              )
+            : Blank.heightBlank(0),
           weaponsMelee,
-          new Separator(0, 0),
-          new Text(
-            0,
-            0,
-            `${i18nLocalize('SHEET.RangedWeaponHeader')} : ${i18nLocalize(
-              'Weapon Group'
-            )}, ${i18nLocalize('Range')}, ${i18nLocalize(
-              'Damage'
-            )}, ${i18nLocalize('Qualities')}, ${i18nLocalize('Flaws')}`
-          ),
+          weaponsRanged.elements.length > 0
+            ? new Separator(0, 0)
+            : Blank.heightBlank(0),
+          weaponsRanged.elements.length > 0
+            ? new Text(
+                0,
+                0,
+                `${i18nLocalize('SHEET.RangedWeaponHeader')} : ${i18nLocalize(
+                  'Weapon Group'
+                )}, ${i18nLocalize('Range')}, ${i18nLocalize(
+                  'Damage'
+                )}, ${i18nLocalize('Qualities')}, ${i18nLocalize('Flaws')}`
+              )
+            : Blank.heightBlank(0),
           weaponsRanged,
-          new Separator(0, 0),
-          new Text(
-            0,
-            0,
-            `${i18nLocalize('Ammunition')} : ${i18nLocalize(
-              'Range'
-            )}, ${i18nLocalize('Damage')}, ${i18nLocalize(
-              'Qualities'
-            )}, ${i18nLocalize('Flaws')}`
-          ),
+          ammunitions.elements.length > 0
+            ? new Separator(0, 0)
+            : Blank.heightBlank(0),
+          ammunitions.elements.length > 0
+            ? new Text(
+                0,
+                0,
+                `${i18nLocalize('Ammunition')} : ${i18nLocalize(
+                  'Range'
+                )}, ${i18nLocalize('Damage')}, ${i18nLocalize(
+                  'Qualities'
+                )}, ${i18nLocalize('Flaws')}`
+              )
+            : Blank.heightBlank(0),
           ammunitions,
-          new Separator(0, 0),
-          new Text(0, 0, 'Armour'),
+          armours.elements.length > 0
+            ? new Separator(0, 0)
+            : Blank.heightBlank(0),
+          armours.elements.length > 0
+            ? new Text(0, 0, 'Armour')
+            : Blank.heightBlank(0),
           armours,
-          new Separator(0, 0),
-          new Text(
-            0,
-            0,
-            `${i18nLocalize('SHEET.PettySpell')} : ${i18nLocalize(
-              'Casting Number'
-            )}, ${i18nLocalize('Range')}, ${i18nLocalize(
-              'Target'
-            )}, ${i18nLocalize('Duration')}`
-          ),
+          petty.elements.length > 0
+            ? new Separator(0, 0)
+            : Blank.heightBlank(0),
+          petty.elements.length > 0
+            ? new Text(
+                0,
+                0,
+                `${i18nLocalize('SHEET.PettySpell')} : ${i18nLocalize(
+                  'Casting Number'
+                )}, ${i18nLocalize('Range')}, ${i18nLocalize(
+                  'Target'
+                )}, ${i18nLocalize('Duration')}`
+              )
+            : Blank.heightBlank(0),
           petty,
-          new Separator(0, 0),
-          new Text(
-            0,
-            0,
-            `${i18nLocalize('SHEET.LoreSpell')} : ${i18nLocalize(
-              'Casting Number'
-            )}, ${i18nLocalize('Range')}, ${i18nLocalize(
-              'Target'
-            )}, ${i18nLocalize('Duration')}, ${i18nLocalize(
-              'WFRP4E.TrappingType.Ingredients'
-            )}`
-          ),
+          spell.elements.length > 0
+            ? new Separator(0, 0)
+            : Blank.heightBlank(0),
+          spell.elements.length > 0
+            ? new Text(
+                0,
+                0,
+                `${i18nLocalize('SHEET.LoreSpell')} : ${i18nLocalize(
+                  'Casting Number'
+                )}, ${i18nLocalize('Range')}, ${i18nLocalize(
+                  'Target'
+                )}, ${i18nLocalize('Duration')}, ${i18nLocalize(
+                  'WFRP4E.TrappingType.Ingredients'
+                )}`
+              )
+            : Blank.heightBlank(0),
           spell,
-          new Separator(0, 0),
-          new Text(
-            0,
-            0,
-            `${i18nLocalize('Blessing')} : ${i18nLocalize(
-              'Range'
-            )}, ${i18nLocalize('Target')}, ${i18nLocalize('Duration')}`
-          ),
+          blessing.elements.length > 0
+            ? new Separator(0, 0)
+            : Blank.heightBlank(0),
+          blessing.elements.length > 0
+            ? new Text(
+                0,
+                0,
+                `${i18nLocalize('Blessing')} : ${i18nLocalize(
+                  'Range'
+                )}, ${i18nLocalize('Target')}, ${i18nLocalize('Duration')}`
+              )
+            : Blank.heightBlank(0),
           blessing,
-          new Separator(0, 0),
-          new Text(
-            0,
-            0,
-            `${i18nLocalize('Miracle')} : ${i18nLocalize(
-              'Range'
-            )}, ${i18nLocalize('Target')}, ${i18nLocalize('Duration')}`
-          ),
+          miracle.elements.length > 0
+            ? new Separator(0, 0)
+            : Blank.heightBlank(0),
+          miracle.elements.length > 0
+            ? new Text(
+                0,
+                0,
+                `${i18nLocalize('Miracle')} : ${i18nLocalize(
+                  'Range'
+                )}, ${i18nLocalize('Target')}, ${i18nLocalize('Duration')}`
+              )
+            : Blank.heightBlank(0),
           miracle,
           new Separator(0, 0),
           trappingsHeader,
           trappings,
-          new Separator(0, 0),
-          new Text(0, 0, 'Psychology'),
+          psychology.elements.length > 0
+            ? new Separator(0, 0)
+            : Blank.heightBlank(0),
+          psychology.elements.length > 0
+            ? new Text(0, 0, 'Psychology')
+            : Blank.heightBlank(0),
           psychology,
-          new Separator(0, 0),
-          new Text(0, 0, 'Criticals'),
+          critical.elements.length > 0
+            ? new Separator(0, 0)
+            : Blank.heightBlank(0),
+          critical.elements.length > 0
+            ? new Text(0, 0, 'Criticals')
+            : Blank.heightBlank(0),
           critical,
-          new Separator(0, 0),
-          new Text(0, 0, 'Diseases'),
+          disease.elements.length > 0
+            ? new Separator(0, 0)
+            : Blank.heightBlank(0),
+          disease.elements.length > 0
+            ? new Text(0, 0, 'Diseases')
+            : Blank.heightBlank(0),
           disease,
-          new Separator(0, 0),
-          new Text(0, 0, 'Injuries'),
+          injury.elements.length > 0
+            ? new Separator(0, 0)
+            : Blank.heightBlank(0),
+          injury.elements.length > 0
+            ? new Text(0, 0, 'Injuries')
+            : Blank.heightBlank(0),
           injury,
-          new Separator(0, 0),
-          new Text(
-            0,
-            0,
-            `${i18nLocalize('Mutations')} (${i18nLocalize('Physical')})`
-          ),
+          mutationP.elements.length > 0
+            ? new Separator(0, 0)
+            : Blank.heightBlank(0),
+          mutationP.elements.length > 0
+            ? new Text(
+                0,
+                0,
+                `${i18nLocalize('Mutations')} (${i18nLocalize('Physical')})`
+              )
+            : Blank.heightBlank(0),
           mutationP,
-          new Separator(0, 0),
-          new Text(
-            0,
-            0,
-            `${i18nLocalize('Mutations')} (${i18nLocalize('Mental')})`
-          ),
+          mutationM.elements.length > 0
+            ? new Separator(0, 0)
+            : Blank.heightBlank(0),
+          mutationM.elements.length > 0
+            ? new Text(
+                0,
+                0,
+                `${i18nLocalize('Mutations')} (${i18nLocalize('Mental')})`
+              )
+            : Blank.heightBlank(0),
           mutationM,
         ]),
       ]);

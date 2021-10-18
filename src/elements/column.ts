@@ -18,7 +18,9 @@ export class Column extends AbstractElement {
       element.x = Math.max(element.x, this.x);
       element.y = currentY;
       element.prepareRender(doc);
-      currentY += element.getHeight(doc) + 2;
+      const elementHeight = element.getHeight(doc);
+      currentY +=
+        elementHeight > 0 ? element.getHeight(doc) + 2 : elementHeight;
     }
     return doc;
   }
@@ -52,5 +54,9 @@ export class Column extends AbstractElement {
       elements.push(...element.getElements());
     }
     return elements;
+  }
+
+  public isEmpty(): boolean {
+    return this.elements.length === 0;
   }
 }

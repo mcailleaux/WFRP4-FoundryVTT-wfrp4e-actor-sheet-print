@@ -83,4 +83,8 @@ export class Row extends AbstractElement {
     }
     return elements;
   }
+
+  public isEmpty(): boolean {
+    return this.elements.length === 0;
+  }
 }

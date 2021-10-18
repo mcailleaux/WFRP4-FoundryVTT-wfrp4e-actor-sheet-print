@@ -25,50 +25,52 @@ export class LabelledValues extends Row {
     const labelPercent = 100 - valuePercent;
     const widthPercent = [labelPercent, valuePercent];
     let currentIndex = 0;
-    if (this.nbrOfCol > 1) {
-      const nbrPerCol = Math.floor(labelledValues.length / this.nbrOfCol);
-      const rest = labelledValues.length - nbrPerCol * this.nbrOfCol;
-      const nbrPerCols = [
-        rest > 0 ? nbrPerCol + 1 : nbrPerCol,
-        rest > 1 ? nbrPerCol + 1 : nbrPerCol,
-        rest > 2 ? nbrPerCol + 1 : nbrPerCol,
-      ];
-      for (let i = 0; i < this.nbrOfCol; i++) {
-        this.elements[i] = new Column(0, 0, []);
-      }
-      for (let i = 0; i < labelledValues.length; i++) {
-        if (i < nbrPerCols[0]) {
-          currentIndex = 0;
-        } else if (i < nbrPerCols[0] + nbrPerCols[1]) {
-          currentIndex = 1;
-        } else {
-          currentIndex = 2;
+    if (labelledValues.length > 0) {
+      if (this.nbrOfCol > 1) {
+        const nbrPerCol = Math.floor(labelledValues.length / this.nbrOfCol);
+        const rest = labelledValues.length - nbrPerCol * this.nbrOfCol;
+        const nbrPerCols = [
+          rest > 0 ? nbrPerCol + 1 : nbrPerCol,
+          rest > 1 ? nbrPerCol + 1 : nbrPerCol,
+          rest > 2 ? nbrPerCol + 1 : nbrPerCol,
+        ];
+        for (let i = 0; i < this.nbrOfCol; i++) {
+          this.elements[i] = new Column(0, 0, []);
         }
-        (<Column>this.elements[currentIndex]).elements.push(
-          new LabelledValue(
-            labelledValues[i].label,
-            labelledValues[i].value,
-            widthPercent,
-            multiline
+        for (let i = 0; i < labelledValues.length; i++) {
+          if (i < nbrPerCols[0]) {
+            currentIndex = 0;
+          } else if (i < nbrPerCols[0] + nbrPerCols[1]) {
+            currentIndex = 1;
+          } else {
+            currentIndex = 2;
+          }
+          (<Column>this.elements[currentIndex]).elements.push(
+            new LabelledValue(
+              labelledValues[i].label,
+              labelledValues[i].value,
+              widthPercent,
+              multiline
+            )
+          );
+        }
+      } else {
+        this.elements.push(
+          new Column(
+            0,
+            0,
+            labelledValues.map(
+              (libelledValue) =>
+                new LabelledValue(
+                  libelledValue.label,
+                  libelledValue.value,
+                  widthPercent,
+                  multiline
+                )
+            )
           )
         );
       }
-    } else {
-      this.elements.push(
-        new Column(
-          0,
-          0,
-          labelledValues.map(
-            (libelledValue) =>
-              new LabelledValue(
-                libelledValue.label,
-                libelledValue.value,
-                widthPercent,
-                multiline
-              )
-          )
-        )
-      );
     }
   }
 

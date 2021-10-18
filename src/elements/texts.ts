@@ -23,51 +23,53 @@ export class Texts extends Row {
       this.nbrOfCol = 4;
     }
     let currentIndex = 0;
-    if (this.nbrOfCol > 1) {
-      const nbrPerCol = Math.floor(texts.length / this.nbrOfCol);
-      const rest = texts.length - nbrPerCol * this.nbrOfCol;
-      const nbrPerCols = [
-        rest > 0 ? nbrPerCol + 1 : nbrPerCol,
-        rest > 1 ? nbrPerCol + 1 : nbrPerCol,
-        rest > 2 ? nbrPerCol + 1 : nbrPerCol,
-        rest > 3 ? nbrPerCol + 1 : nbrPerCol,
-      ];
-      for (let i = 0; i < this.nbrOfCol; i++) {
-        this.elements[i] = new Column(0, 0, []);
-      }
-      for (let i = 0; i < texts.length; i++) {
-        if (i < nbrPerCols[0]) {
-          currentIndex = 0;
-        } else if (i < nbrPerCols[0] + nbrPerCols[1]) {
-          currentIndex = 1;
-        } else if (i < nbrPerCols[0] + nbrPerCols[1] + nbrPerCols[2]) {
-          currentIndex = 2;
-        } else {
-          currentIndex = 3;
+    if (texts.length > 0) {
+      if (this.nbrOfCol > 1) {
+        const nbrPerCol = Math.floor(texts.length / this.nbrOfCol);
+        const rest = texts.length - nbrPerCol * this.nbrOfCol;
+        const nbrPerCols = [
+          rest > 0 ? nbrPerCol + 1 : nbrPerCol,
+          rest > 1 ? nbrPerCol + 1 : nbrPerCol,
+          rest > 2 ? nbrPerCol + 1 : nbrPerCol,
+          rest > 3 ? nbrPerCol + 1 : nbrPerCol,
+        ];
+        for (let i = 0; i < this.nbrOfCol; i++) {
+          this.elements[i] = new Column(0, 0, []);
         }
-        (<Column>this.elements[currentIndex]).elements.push(
-          new Row(0, 0, [
-            multiline
-              ? new MultilineText(0, 0, texts[i])
-              : new Text(0, 0, texts[i]),
-          ])
+        for (let i = 0; i < texts.length; i++) {
+          if (i < nbrPerCols[0]) {
+            currentIndex = 0;
+          } else if (i < nbrPerCols[0] + nbrPerCols[1]) {
+            currentIndex = 1;
+          } else if (i < nbrPerCols[0] + nbrPerCols[1] + nbrPerCols[2]) {
+            currentIndex = 2;
+          } else {
+            currentIndex = 3;
+          }
+          (<Column>this.elements[currentIndex]).elements.push(
+            new Row(0, 0, [
+              multiline
+                ? new MultilineText(0, 0, texts[i])
+                : new Text(0, 0, texts[i]),
+            ])
+          );
+        }
+      } else {
+        this.elements.push(
+          new Column(
+            0,
+            0,
+            texts.map(
+              (text) =>
+                new Row(0, 0, [
+                  multiline
+                    ? new MultilineText(0, 0, text)
+                    : new Text(0, 0, text),
+                ])
+            )
+          )
         );
       }
-    } else {
-      this.elements.push(
-        new Column(
-          0,
-          0,
-          texts.map(
-            (text) =>
-              new Row(0, 0, [
-                multiline
-                  ? new MultilineText(0, 0, text)
-                  : new Text(0, 0, text),
-              ])
-          )
-        )
-      );
     }
   }
 
