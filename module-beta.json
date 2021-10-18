@@ -21,7 +21,7 @@
       "path": "lang/fr.json"
     }
   ],
-  "styles": ["./styles/pj-print.css"],
+  "styles": [],
   "url": "https://github.com/mcailleaux/WFRP4-FoundryVTT-wfrp4e-actor-sheet-print/tree/dist-beta",
   "download": "https://github.com/mcailleaux/WFRP4-FoundryVTT-wfrp4e-actor-sheet-print/blob/dist-beta/dist/wfrp4e-actor-sheet-print.zip?raw=true",
   "manifest": "https://raw.githubusercontent.com/mcailleaux/WFRP4-FoundryVTT-wfrp4e-actor-sheet-print/dist-beta/module-beta.json",

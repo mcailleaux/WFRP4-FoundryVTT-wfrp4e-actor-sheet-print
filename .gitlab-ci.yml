@@ -14,12 +14,10 @@ build:
     - npm ci
     - npm run build
     - mkdir -p dist/lang
-    - mkdir -p dist/styles
     - cp lang/* dist/lang/
-    - cp styles/* dist/styles/
     - cp module.json dist
     - cd dist
-    - zip wfrp4e-actor-sheet-print.zip -r *.* elements lang styles -x ".*"
+    - zip wfrp4e-actor-sheet-print.zip -r *.* elements lang -x ".*"
   artifacts:
     name: wfrp4e-actor-sheet-print
     when: on_success
@@ -35,12 +33,10 @@ build_beta:
     - npm ci
     - npm run build
     - mkdir -p dist/lang
-    - mkdir -p dist/styles
     - cp lang/* dist/lang/
-    - cp styles/* dist/styles/
     - cp module-beta.json dist/module.json
     - cd dist
-    - zip wfrp4e-actor-sheet-print.zip -r *.* elements lang styles -x ".*"
+    - zip wfrp4e-actor-sheet-print.zip -r *.* elements lang -x ".*"
   artifacts:
     name: wfrp4e-actor-sheet-print
     when: on_success

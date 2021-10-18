@@ -4,4 +4,4 @@
 
 ### New features
 
-- Print function on actor sheet
+- PDF Export Characters sheet
